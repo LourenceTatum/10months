@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Monthsary</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&amp;family=Outfit:wght@300;400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      .font-display {
+        font-family: "Cormorant Garamond", serif;
+      }
+      .font-body {
+        font-family: "Outfit", sans-serif;
+      }
+
+      @keyframes floatHeart {
+        0% {
+          transform: translateY(100%) scale(0);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-400%) scale(1.2);
+          opacity: 0;
+        }
+      }
+      @keyframes fadeSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(244, 114, 182, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(244, 114, 182, 0.4);
+        }
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: -200% center;
+        }
+        100% {
+          background-position: 200% center;
+        }
+      }
+      .animate-float-heart {
+        animation: floatHeart 4s ease-out forwards;
+      }
+      .animate-fade-up {
+        animation: fadeSlideUp 0.8s ease-out forwards;
+      }
+      .animate-pulse-glow {
+        animation: pulse-glow 3s ease-in-out infinite;
+      }
+      .shimmer-text {
+        background: linear-gradient(
+          90deg,
+          #be185d,
+          #f472b6,
+          #fbbf24,
+          #f472b6,
+          #be185d
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 4s linear infinite;
+      }
+      .heart-particle {
+        position: absolute;
+        pointer-events: none;
+        font-size: 1.2rem;
+      }
+      .letter-card {
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .scene-hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .scene-visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .transition-scene {
+        transition: opacity 0.6s ease;
+      }
+    </style>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+    </style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
+  <body
+    class="h-full overflow-auto font-body"
+    style="
+      background: linear-gradient(
+        135deg,
+        #1a0a1e 0%,
+        #2d1033 30%,
+        #1a0a2e 60%,
+        #0f0a1a 100%
+      );
+    "
+  >
+    <audio autoplay loop>
+      <source src="bte.mp3" type="audio/mp3" />
+    </audio>
+
+    <div id="app" class="h-full w-full relative overflow-hidden">
+      <!-- Floating hearts background -->
+      <div
+        id="hearts-container"
+        class="absolute inset-0 pointer-events-none z-0"
+      ></div>
+      <!-- Scene 1: Intro -->
+      <div
+        id="scene-intro"
+        class="absolute inset-0 flex items-center justify-center transition-scene scene-visible z-10 p-4"
+      >
+        <div class="text-center">
+          <div
+            class="animate-fade-up"
+            style="animation-delay: 0.2s; opacity: 0"
+          >
+            <span class="text-6xl">💕</span>
+          </div>
+          <h1
+            id="intro-title"
+            class="font-display text-5xl md:text-7xl font-semibold text-pink-200 mt-6 animate-fade-up"
+            style="animation-delay: 0.5s"
+          >
+            Happy Monthsary
+          </h1>
+          <p
+            id="intro-name"
+            class="font-display text-2xl md:text-3xl text-pink-300/80 mt-3 italic animate-fade-up text-center"
+            style="animation-delay: 0.8s"
+          >
+            Baneyneyyyy
+          </p>
+
+          <div class="flex justify-center">
+            <button
+              id="open-btn"
+              class="mt-10 px-8 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white font-medium tracking-wide hover:from-pink-500 hover:to-rose-400 transition-all animate-fade-up animate-pulse-glow"
+              style="animation-delay: 1.2s"
+              onclick="openLetter()"
+            >
+              <span class="flex items-center gap-2">
+                <i data-lucide="heart" style="width: 18px; height: 18px"></i>
+                Open My Letter
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Scene 2: Letter -->
+      <div
+        id="scene-letter"
+        class="absolute inset-0 flex items-center justify-center transition-scene scene-hidden z-10 p-4"
+      >
+        <div
+          class="letter-card bg-white/5 rounded-3xl p-8 md:p-12 max-w-2xl w-full mx-auto relative overflow-hidden"
+        >
+          <div
+            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-rose-400 to-amber-400"
+          ></div>
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-3xl"></span>
+            <span
+              id="months-badge"
+              class="shimmer-text font-display text-2xl font-semibold"
+              >10 Months</span
+            >
+          </div>
+          <p
+            id="letter-greeting"
+            class="font-display text-3xl md:text-4xl text-pink-100 italic mb-6"
+          >
+            My Dearest Baneyneyyyy
+          </p>
+          <div
+            id="letter-body"
+            class="text-pink-200/90 text-base md:text-lg leading-relaxed space-y-4 font-light"
+          >
+            <p>
+              Haiiii baneyneyyy happy monthsarryy satinnn, dikoo ineexpectt naa
+              aabott tayoo ditoo 2 monthss naangg magg 1 yearr na tayoooo
+              sorabrangg thanful akoo dahill dumatingg ikaw saa buhayy koo
+              iloveyouuuu so muchh baneyneyyyyy
+            </p>
+            <p>
+              Sanaa magustuhannn moo tonggg gawaa kong websitee paraa sayoo
+              iloveyouuuu somuchh baneyneyyyy happy monthsarryy ulit baneyneyyy
+              lovee na lovee ko ikawww iloveyouuu
+            </p>
+            <p></p>
+          </div>
+          <div class="mt-8 pt-6 border-t border-white/10">
+            <p
+              id="letter-closing"
+              class="font-display text-xl text-pink-300 italic"
+            >
+              Forever and always yours,
+            </p>
+            <p
+              id="letter-sender"
+              class="font-display text-2xl text-pink-100 mt-2 font-semibold"
+            >
+              With all my love
+            </p>
+            <p
+              id="letter-sender"
+              class="font-display text-2xl text-pink-100 mt-2 font-semibold"
+            >
+              Rennrennn
+            </p>
+          </div>
+          <a href="index.html"
+            ><button
+              id="open-btn"
+              class="mt-10 px-8 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white font-medium tracking-wide hover:from-pink-500 hover:to-rose-400 transition-all animate-fade-up animate-pulse-glow"
+              style="animation-delay: 1.2s"
+            >
+              back
+            </button></a
+          >
+        </div>
+      </div>
+    </div>
+    <script>
+      const defaultConfig = {
+        partner_name: "My Love",
+        months_count: "10",
+        letter_greeting: "My Dearest Love,",
+        letter_body:
+          "Every moment with you feels like a beautiful dream I never want to wake up from. You've filled my days with so much love, laughter, and warmth that I can't imagine my life without you.\n\nThank you for being my safe place, and the most incredible person I know. Here's to many more months — and a lifetime — of us. 🤍",
+        letter_closing: "Forever and always yours,",
+        sender_name: "With all my love 💗",
+        background_color: "#1a0a1e",
+        text_color: "#fce7f3",
+        accent_color: "#ec4899",
+        surface_color: "#ffffff0d",
+        secondary_action_color: "#f9a8d4",
+        font_family: "Cormorant Garamond",
+        font_size: 16,
+      };
+
+      function applyConfig(config) {
+        const c = { ...defaultConfig, ...config };
+        document.getElementById("intro-name").textContent = c.partner_name;
+        document.getElementById("months-badge").textContent =
+          c.months_count + " Months";
+        document.getElementById("letter-greeting").textContent =
+          c.letter_greeting;
+        const bodyParagraphs = c.letter_body
+          .split("\n")
+          .filter((p) => p.trim());
+        document.getElementById("letter-body").innerHTML = bodyParagraphs
+          .map((p) => `<p>${p}</p>`)
+          .join("");
+        document.getElementById("letter-closing").textContent =
+          c.letter_closing;
+        document.getElementById("letter-sender").textContent =
+          "— " + c.sender_name;
+
+        const customFont = c.font_family || defaultConfig.font_family;
+        document.querySelectorAll(".font-display").forEach((el) => {
+          el.style.fontFamily = `${customFont}, serif`;
+        });
+        const base = c.font_size || defaultConfig.font_size;
+        document.getElementById("letter-greeting").style.fontSize =
+          `${base * 2}px`;
+        document.getElementById("letter-body").style.fontSize = `${base}px`;
+        document.getElementById("letter-closing").style.fontSize =
+          `${base * 1.25}px`;
+        document.getElementById("letter-sender").style.fontSize =
+          `${base * 1.5}px`;
+
+        document.body.style.background = `linear-gradient(135deg, ${c.background_color} 0%, #2d1033 30%, #1a0a2e 60%, #0f0a1a 100%)`;
+        document
+          .querySelectorAll(".letter-card")
+          .forEach((el) => (el.style.backgroundColor = c.surface_color));
+      }
+
+      function openLetter() {
+        const intro = document.getElementById("scene-intro");
+        const letter = document.getElementById("scene-letter");
+
+        intro.style.opacity = "0";
+        intro.style.pointerEvents = "none";
+
+        setTimeout(() => {
+          letter.style.opacity = "1";
+          letter.style.pointerEvents = "auto";
+          burstHearts();
+        }, 300);
+      }
+
+      function replayIntro() {
+        document
+          .getElementById("scene-letter")
+          .classList.remove("scene-visible");
+        document.getElementById("scene-letter").classList.add("scene-hidden");
+        document.getElementById("scene-intro").classList.remove("scene-hidden");
+        document.getElementById("scene-intro").classList.add("scene-visible");
+      }
+
+      function burstHearts() {
+        const container = document.getElementById("hearts-container");
+        const emojis = ["💕", "💗", "💖", "✨", "🤍", "💫"];
+        for (let i = 0; i < 15; i++) {
+          setTimeout(() => {
+            const heart = document.createElement("span");
+            heart.className = "heart-particle animate-float-heart";
+            heart.textContent =
+              emojis[Math.floor(Math.random() * emojis.length)];
+            heart.style.left = Math.random() * 100 + "%";
+            heart.style.bottom = "0";
+            heart.style.animationDuration = 3 + Math.random() * 2 + "s";
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+          }, i * 200);
+        }
+      }
+
+      // Ambient floating hearts
+      setInterval(() => {
+        const container = document.getElementById("hearts-container");
+        if (container.children.length < 5) {
+          const heart = document.createElement("span");
+          heart.className = "heart-particle animate-float-heart";
+          heart.textContent = ["💕", "✨", "🤍"][Math.floor(Math.random() * 3)];
+          heart.style.left = Math.random() * 100 + "%";
+          heart.style.bottom = "0";
+          heart.style.opacity = "0.5";
+          heart.style.animationDuration = 5 + Math.random() * 3 + "s";
+          container.appendChild(heart);
+          setTimeout(() => heart.remove(), 8000);
+        }
+      }, 2000);
+
+      // Element SDK init
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          applyConfig(config);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () =>
+                config.background_color || defaultConfig.background_color,
+              set: (v) => {
+                config.background_color = v;
+                window.elementSdk.setConfig({ background_color: v });
+              },
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (v) => {
+                config.surface_color = v;
+                window.elementSdk.setConfig({ surface_color: v });
+              },
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (v) => {
+                config.text_color = v;
+                window.elementSdk.setConfig({ text_color: v });
+              },
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (v) => {
+                config.accent_color = v;
+                window.elementSdk.setConfig({ accent_color: v });
+              },
+            },
+            {
+              get: () =>
+                config.secondary_action_color ||
+                defaultConfig.secondary_action_color,
+              set: (v) => {
+                config.secondary_action_color = v;
+                window.elementSdk.setConfig({ secondary_action_color: v });
+              },
+            },
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (v) => {
+              config.font_family = v;
+              window.elementSdk.setConfig({ font_family: v });
+            },
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (v) => {
+              config.font_size = v;
+              window.elementSdk.setConfig({ font_size: v });
+            },
+          },
+        }),
+        mapToEditPanelValues: (config) =>
+          new Map([
+            ["partner_name", config.partner_name || defaultConfig.partner_name],
+            ["months_count", config.months_count || defaultConfig.months_count],
+            [
+              "letter_greeting",
+              config.letter_greeting || defaultConfig.letter_greeting,
+            ],
+            ["letter_body", config.letter_body || defaultConfig.letter_body],
+            [
+              "letter_closing",
+              config.letter_closing || defaultConfig.letter_closing,
+            ],
+            ["sender_name", config.sender_name || defaultConfig.sender_name],
+          ]),
+      });
+
+      applyConfig(defaultConfig);
+      lucide.createIcons();
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9f9f85050422ba08',t:'MTc3ODQ4NTA1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
